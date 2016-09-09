@@ -20,29 +20,70 @@ import java.util.logging.Logger;
 public class Connect extends Thread
 {
 
-     public Connect(String host, int portNumber)
+    private static Connect instance = null;
+
+    private Connect() {
+    }
+
+    public static Connect getInstance() {
+        if (instance == null) {
+            instance = new Connect();
+        }
+        return instance;
+    }
+    
+    
+     public void connect(String host, int portNumber) 
     {
+       
         this.host = host;
         this.portNumber = portNumber;
+        try
+        {
+            socket = new Socket(host, portNumber);
+            System.out.println("Socket created: " + socket);
+                    
+        } catch (Exception ex)
+        {
+            Logger.getLogger(Connect.class.getName()).log(Level.SEVERE, null, ex);
+        }
                 
         System.out.println("Creating socket to '" + host + "' on port " + portNumber);
 
         
     }
      
+     
+     
     String host;
     int portNumber;
+    private Socket socket;
+
+    public Socket getSocket()
+    {
+        return socket;
+    }
     
-    public void run() {
+    BufferedReader br;
+    PrintWriter out;
+
+    public BufferedReader getBr()
+    {
+        return br;
+    }
+
+    
+    
+    public void ee() {
         
         while (true)
         {
-            Socket socket;
+            
             try
             {
                 socket = new Socket(host, portNumber);
-                BufferedReader br = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-                PrintWriter out = new PrintWriter(socket.getOutputStream(), true);
+                br = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+                out = new PrintWriter(socket.getOutputStream(), true);
 
                 System.out.println("server says:" + br.readLine());
 

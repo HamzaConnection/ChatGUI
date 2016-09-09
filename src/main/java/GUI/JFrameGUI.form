@@ -95,6 +95,9 @@
       </Properties>
     </Component>
     <Component class="javax.swing.JTextField" name="textFieldIP">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="localhost"/>
+      </Properties>
       <Events>
         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="textFieldIPActionPerformed"/>
       </Events>
@@ -149,7 +152,7 @@
 
       <Layout class="org.netbeans.modules.form.compat2.layouts.support.JScrollPaneSupportLayout"/>
       <SubComponents>
-        <Component class="javax.swing.JTextArea" name="textAreaChat">
+        <Component class="javax.swing.JTextArea" name="bob">
           <Properties>
             <Property name="editable" type="boolean" value="false"/>
             <Property name="columns" type="int" value="20"/>
@@ -177,6 +180,9 @@
       </SubComponents>
     </Container>
     <Component class="javax.swing.JTextField" name="textFieldPort">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="8080"/>
+      </Properties>
       <Events>
         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="textFieldPortActionPerformed"/>
       </Events>
