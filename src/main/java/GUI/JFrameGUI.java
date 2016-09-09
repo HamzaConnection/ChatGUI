@@ -14,10 +14,6 @@ import java.util.Scanner;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-
-
-
-
 import javax.swing.SwingWorker;
 
 /**
@@ -28,22 +24,18 @@ public class JFrameGUI extends javax.swing.JFrame
 {
 
     Connect con = Connect.getInstance();
-    
-    
+    Scanner scan = null;
 
     private void startSwingWorker()
     {
         SwingWorker<Void, Void> worker = new SwingWorker<Void, Void>()
         {
             @Override
-            protected Void doInBackground() 
+            protected Void doInBackground()
             {
-                System.out.println("DoInBackground");
-                BufferedReader br = null;
-                Scanner scan = null;
                 try
                 {
-                    if(con.getSocket()==null)
+                    if (con.getSocket() == null)
                     {
                         System.out.println("Socket is null");
                         return null;
@@ -53,27 +45,24 @@ public class JFrameGUI extends javax.swing.JFrame
                 {
                     System.out.println(ex);
                 }
-                System.out.println("exception");
+                String msg = "";
                 while (true)
                 {
                     try
                     {
-                        
-                        
-                        System.out.println("Before read");
-                        bob.setText(scan.nextLine());
-                        System.out.println("After read");
+                        msg += scan.nextLine() + "\n";
+                        chat.setText(msg);
+
                     } catch (Exception ex)
                     {
                         System.out.println(ex);
                     }
-                    
 
                 }
 
             }
         };
-        System.out.println("starting");
+
         worker.execute();
     }
 
@@ -102,10 +91,10 @@ public class JFrameGUI extends javax.swing.JFrame
         buttonDisconnect = new javax.swing.JButton();
         jLabel1 = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
-        textAreaMessage = new javax.swing.JTextArea();
+        message = new javax.swing.JTextArea();
         buttonSend = new javax.swing.JButton();
         jScrollPane2 = new javax.swing.JScrollPane();
-        bob = new javax.swing.JTextArea();
+        chat = new javax.swing.JTextArea();
         jScrollPane3 = new javax.swing.JScrollPane();
         textAreaOnlineUsers = new javax.swing.JTextArea();
         textFieldPort = new javax.swing.JTextField();
@@ -145,18 +134,25 @@ public class JFrameGUI extends javax.swing.JFrame
         jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel1.setText("Online Users");
 
-        textAreaMessage.setColumns(20);
-        textAreaMessage.setLineWrap(true);
-        textAreaMessage.setRows(5);
-        jScrollPane1.setViewportView(textAreaMessage);
+        message.setColumns(20);
+        message.setLineWrap(true);
+        message.setRows(5);
+        jScrollPane1.setViewportView(message);
 
         buttonSend.setText("Send");
+        buttonSend.addActionListener(new java.awt.event.ActionListener()
+        {
+            public void actionPerformed(java.awt.event.ActionEvent evt)
+            {
+                buttonSendActionPerformed(evt);
+            }
+        });
 
-        bob.setEditable(false);
-        bob.setColumns(20);
-        bob.setLineWrap(true);
-        bob.setRows(5);
-        jScrollPane2.setViewportView(bob);
+        chat.setEditable(false);
+        chat.setColumns(20);
+        chat.setLineWrap(true);
+        chat.setRows(5);
+        jScrollPane2.setViewportView(chat);
 
         textAreaOnlineUsers.setEditable(false);
         textAreaOnlineUsers.setColumns(20);
@@ -239,8 +235,8 @@ public class JFrameGUI extends javax.swing.JFrame
     }//GEN-LAST:event_textFieldIPActionPerformed
 
     private void buttonDisconnectActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonDisconnectActionPerformed
-        startSwingWorker();
 
+        
     }//GEN-LAST:event_buttonDisconnectActionPerformed
 
     private void buttonConnectActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_buttonConnectActionPerformed
@@ -248,9 +244,8 @@ public class JFrameGUI extends javax.swing.JFrame
 
         String ipInput = textFieldIP.getText();
         int portInput = Integer.parseInt(textFieldPort.getText());
-        Connect con = Connect.getInstance();
         con.connect(ipInput, portInput);
-        //con.start();
+        startSwingWorker();
 
 
     }//GEN-LAST:event_buttonConnectActionPerformed
@@ -260,6 +255,11 @@ public class JFrameGUI extends javax.swing.JFrame
 
 // TODO add your handling code here:
     }//GEN-LAST:event_textFieldPortActionPerformed
+
+    private void buttonSendActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_buttonSendActionPerformed
+    {//GEN-HEADEREND:event_buttonSendActionPerformed
+        String msg = message.getText();
+    }//GEN-LAST:event_buttonSendActionPerformed
 
     /**
      * @param args the command line arguments
@@ -307,17 +307,17 @@ public class JFrameGUI extends javax.swing.JFrame
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JTextArea bob;
     private javax.swing.JButton buttonConnect;
     private javax.swing.JButton buttonDisconnect;
     private javax.swing.JButton buttonSend;
+    private javax.swing.JTextArea chat;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JLabel labelUsername;
-    private javax.swing.JTextArea textAreaMessage;
+    private javax.swing.JTextArea message;
     private javax.swing.JTextArea textAreaOnlineUsers;
     private javax.swing.JTextField textFieldIP;
     private javax.swing.JTextField textFieldPort;
