@@ -10,6 +10,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 
 import java.io.InputStreamReader;
+import java.io.PrintWriter;
 import java.util.Scanner;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -25,6 +26,7 @@ public class JFrameGUI extends javax.swing.JFrame
 
     Connect con = Connect.getInstance();
     Scanner scan = null;
+    PrintWriter write = null;
 
     private void startSwingWorker()
     {
@@ -43,7 +45,7 @@ public class JFrameGUI extends javax.swing.JFrame
                     scan = new Scanner(con.getSocket().getInputStream());
                 } catch (Exception ex)
                 {
-                    System.out.println(ex);
+                    System.out.println("Scanner exception" + ex);
                 }
                 String msg = "";
                 while (true)
@@ -64,6 +66,47 @@ public class JFrameGUI extends javax.swing.JFrame
         };
 
         worker.execute();
+    }
+
+    public void sendmessage()
+    {
+        SwingWorker<Void, Void> worker2 = new SwingWorker<Void, Void>()
+        {
+            @Override
+            protected Void doInBackground()
+            {
+                try
+                {
+                    if (con.getSocket() == null)
+                    {
+                        System.out.println("Socket is null");
+                        return null;
+                    }
+                    write = new PrintWriter(con.getSocket().getOutputStream(),true);
+
+                } catch (Exception ex)
+                {
+                    System.out.println("creating the printwriter" + ex);
+                }
+                String msg = "";
+
+                try
+                {
+                    msg = message.getText();
+                    message.setText("");
+                    System.out.println(msg);
+                    write.println(msg);
+                } catch (Exception ex)
+                {
+                    System.out.println("Writer exception " + ex);
+                }
+
+                return null;
+
+            }
+        };
+
+        worker2.execute();
     }
 
     /**
@@ -236,7 +279,7 @@ public class JFrameGUI extends javax.swing.JFrame
 
     private void buttonDisconnectActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonDisconnectActionPerformed
 
-        
+
     }//GEN-LAST:event_buttonDisconnectActionPerformed
 
     private void buttonConnectActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_buttonConnectActionPerformed
@@ -258,7 +301,7 @@ public class JFrameGUI extends javax.swing.JFrame
 
     private void buttonSendActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_buttonSendActionPerformed
     {//GEN-HEADEREND:event_buttonSendActionPerformed
-        String msg = message.getText();
+        sendmessage();
     }//GEN-LAST:event_buttonSendActionPerformed
 
     /**

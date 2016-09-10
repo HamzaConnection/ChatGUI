@@ -1,8 +1,4 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+
 package Socket;
 
 import java.io.BufferedReader;
@@ -25,7 +21,14 @@ public class Connect //extends Thread
     int portNumber;
     private Socket socket;
     BufferedReader br;
-    PrintWriter out;
+    PrintWriter write;
+
+    public PrintWriter getWrite()
+    {
+        return write;
+    }
+
+    
 
     
     public void connect(String host, int portNumber)
@@ -36,7 +39,8 @@ public class Connect //extends Thread
         try
         {
             socket = new Socket(host, portNumber);
-
+            write = new PrintWriter(socket.getOutputStream(),true);
+            
         } catch (Exception ex)
         {
             System.out.println(ex);
@@ -69,6 +73,8 @@ public class Connect //extends Thread
     {
         return br;
     }
+    
+    
 
 //    public void run() {
 //        
