@@ -109,6 +109,47 @@ public class JFrameGUI extends javax.swing.JFrame
         worker2.execute();
     }
 
+    public void logout()
+    {
+        SwingWorker<Void, Void> worker3 = new SwingWorker<Void, Void>()
+        {
+            @Override
+            protected Void doInBackground()
+            {
+                try
+                {
+                    if (con.getSocket() == null)
+                    {
+                        System.out.println("Socket is null");
+                        return null;
+                    }
+                    write = new PrintWriter(con.getSocket().getOutputStream(),true);
+
+                } catch (Exception ex)
+                {
+                    System.out.println("creating the printwriter" + ex);
+                }
+                
+
+                try
+                {
+                    System.out.println("Before writting ");
+                    write.println("LOGOUT:");
+                    System.exit(0);
+                    
+                } catch (Exception ex)
+                {
+                    System.out.println("Writer exception " + ex);
+                }
+
+                return null;
+
+            }
+        };
+
+        worker3.execute();
+    }
+
     /**
      * Creates new form JFrameGUI
      */
@@ -132,14 +173,11 @@ public class JFrameGUI extends javax.swing.JFrame
         textFieldIP = new javax.swing.JTextField();
         buttonConnect = new javax.swing.JButton();
         buttonDisconnect = new javax.swing.JButton();
-        jLabel1 = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
         message = new javax.swing.JTextArea();
         buttonSend = new javax.swing.JButton();
         jScrollPane2 = new javax.swing.JScrollPane();
         chat = new javax.swing.JTextArea();
-        jScrollPane3 = new javax.swing.JScrollPane();
-        textAreaOnlineUsers = new javax.swing.JTextArea();
         textFieldPort = new javax.swing.JTextField();
         jLabel2 = new javax.swing.JLabel();
 
@@ -147,7 +185,6 @@ public class JFrameGUI extends javax.swing.JFrame
 
         labelUsername.setText("IP:");
 
-        textFieldIP.setText("localhost");
         textFieldIP.addActionListener(new java.awt.event.ActionListener()
         {
             public void actionPerformed(java.awt.event.ActionEvent evt)
@@ -174,9 +211,6 @@ public class JFrameGUI extends javax.swing.JFrame
             }
         });
 
-        jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel1.setText("Online Users");
-
         message.setColumns(20);
         message.setLineWrap(true);
         message.setRows(5);
@@ -197,13 +231,6 @@ public class JFrameGUI extends javax.swing.JFrame
         chat.setRows(5);
         jScrollPane2.setViewportView(chat);
 
-        textAreaOnlineUsers.setEditable(false);
-        textAreaOnlineUsers.setColumns(20);
-        textAreaOnlineUsers.setLineWrap(true);
-        textAreaOnlineUsers.setRows(5);
-        jScrollPane3.setViewportView(textAreaOnlineUsers);
-
-        textFieldPort.setText("8080");
         textFieldPort.addActionListener(new java.awt.event.ActionListener()
         {
             public void actionPerformed(java.awt.event.ActionEvent evt)
@@ -238,13 +265,7 @@ public class JFrameGUI extends javax.swing.JFrame
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(buttonSend, javax.swing.GroupLayout.PREFERRED_SIZE, 122, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addComponent(jScrollPane2))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(0, 29, Short.MAX_VALUE)
-                        .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap())
+                .addContainerGap(18, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -255,18 +276,14 @@ public class JFrameGUI extends javax.swing.JFrame
                     .addComponent(textFieldIP, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(buttonConnect)
                     .addComponent(buttonDisconnect)
-                    .addComponent(jLabel1)
                     .addComponent(textFieldPort, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel2))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 263, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 263, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(buttonSend, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 84, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                    .addComponent(jScrollPane3))
+                    .addComponent(buttonSend, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 84, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap())
         );
 
@@ -278,7 +295,7 @@ public class JFrameGUI extends javax.swing.JFrame
     }//GEN-LAST:event_textFieldIPActionPerformed
 
     private void buttonDisconnectActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonDisconnectActionPerformed
-
+        logout();
 
     }//GEN-LAST:event_buttonDisconnectActionPerformed
 
@@ -354,14 +371,11 @@ public class JFrameGUI extends javax.swing.JFrame
     private javax.swing.JButton buttonDisconnect;
     private javax.swing.JButton buttonSend;
     private javax.swing.JTextArea chat;
-    private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
-    private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JLabel labelUsername;
     private javax.swing.JTextArea message;
-    private javax.swing.JTextArea textAreaOnlineUsers;
     private javax.swing.JTextField textFieldIP;
     private javax.swing.JTextField textFieldPort;
     // End of variables declaration//GEN-END:variables
